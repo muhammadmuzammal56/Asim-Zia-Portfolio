@@ -4,21 +4,28 @@ import PropTypes from 'prop-types'
 const ThemeContext = createContext()
 
 const ThemeProvider = ({ children }) => {
-  const [themeName, setThemeName] = useState('light')
+  const [themeName, setThemeName] = useState(() => {
+    // Check if there's a theme already set in localStorage
+    const storedTheme = localStorage.getItem('themeName')
+    return storedTheme || 'dark' // Default to 'dark' if not found
+  })
 
   useEffect(() => {
-    const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setThemeName(darkMediaQuery.matches ? 'dark' : 'light')
-    darkMediaQuery.addEventListener('change', (e) => {
-      setThemeName(e.matches ? 'dark' : 'light')
-    });
+    // Update the theme in localStorage if it's not already set
+    if (!localStorage.getItem('themeName')) {
+      localStorage.setItem('themeName', 'dark')
+    }
   }, [])
 
   const toggleTheme = () => {
-    const name = themeName === 'dark' ? 'light' : 'dark'
-    localStorage.setItem('themeName', name)
-    setThemeName(name)
+    const newTheme = themeName === 'dark' ? 'light' : 'dark'
+    setThemeName(newTheme)
+    localStorage.setItem('themeName', newTheme)
   }
+
+  useEffect(() => {
+    console.log('themeName', themeName) // You can remove this in production
+  }, [themeName])
 
   return (
     <ThemeContext.Provider value={[{ themeName, toggleTheme }]}>

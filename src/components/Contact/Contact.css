@@ -1,3 +1,27 @@
-.contact {
-  flex-direction: column;
+.contact__options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* Allows wrapping if needed */
+  gap: 1em; /* Optional: adds spacing between items */
+}
+
+.contact__options a {
+  flex: 1 1 30%; /* Grow/shrink basis: makes them flexible */
+  text-align: center;
+}
+
+/* Stack vertically on small screens */
+@media (max-width: 600px) {
+  .contact__options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact__options a {
+    width: 100%;
+  }
 }
